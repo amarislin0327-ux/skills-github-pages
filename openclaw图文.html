@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw × 电商 | AI运营革命</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+  :root {
+    --ink: #1a1a1a;
+    --ink-light: #444;
+    --ink-muted: #888;
+    --accent: #d4380d;
+    --accent-warm: #fa541c;
+    --accent-gold: #d48806;
+    --bg: #faf8f3;
+    --bg-card: #ffffff;
+    --bg-code: #1e1e2e;
+    --border: #e8e0d0;
+    --border-strong: #c8b89a;
+    --highlight: #fff7e6;
+    --highlight-red: #fff1f0;
+    --green: #389e0d;
+    --blue: #1d6fa4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Noto Sans SC', 'PingFang SC', sans-serif;
+    font-size: 16px;
+    line-height: 1.9;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  /* ── 封面区 ── */
+  .cover {
+    background: var(--ink);
+    margin: 0 -20px 48px;
+    padding: 56px 40px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,56,13,0.35) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,136,6,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cover-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .cover h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.35;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .cover h1 em {
+    color: #fa8c16;
+    font-style: normal;
+  }
+  .cover-sub {
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    font-weight: 300;
+    position: relative;
+  }
+  .cover-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    position: relative;
+  }
+  .cover-meta-badge {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.8);
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  /* ── 正文排版 ── */
+  .section {
+    margin-bottom: 56px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .section-num {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    background: var(--ink);
+    color: #fff;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3px;
+  }
+  .section-header h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .section-header .emoji {
+    font-size: 20px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    color: var(--ink-light);
+  }
+
+  strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* ── 引言块 ── */
+  .intro-box {
+    background: var(--highlight);
+    border-left: 4px solid var(--accent-gold);
+    padding: 20px 24px;
+    margin-bottom: 40px;
+    font-size: 15px;
+    color: var(--ink-light);
+    line-height: 1.85;
+  }
+  .intro-box strong {
+    color: var(--accent-gold);
+  }
+
+  /* ── 数据卡片 ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 24px 0 32px;
+  }
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 18px 16px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--ink-muted);
+    line-height: 1.4;
+  }
+
+  /* ── 场景卡片 ── */
+  .scene-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent);
+    padding: 28px 28px 24px;
+    margin-bottom: 28px;
+  }
+  .scene-card.green { border-top-color: var(--green); }
+  .scene-card.blue { border-top-color: var(--blue); }
+  .scene-card.gold { border-top-color: var(--accent-gold); }
+
+  .scene-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .scene-badge {
+    font-size: 11px;
+    font-weight: 500;
+    font-family: 'Noto Sans SC', sans-serif;
+    padding: 2px 8px;
+    background: var(--highlight-red);
+    color: var(--accent);
+    border-radius: 2px;
+  }
+  .scene-badge.green { background: #f6ffed; color: var(--green); }
+  .scene-badge.blue { background: #e6f4ff; color: var(--blue); }
+  .scene-badge.gold { background: var(--highlight); color: var(--accent-gold); }
+
+  .scene-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 16px 0;
+  }
+
+  /* ── 痛点 vs 方案 对比 ── */
+  .vs-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .vs-col {
+    padding: 14px 16px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .vs-col.pain {
+    background: var(--highlight-red);
+    border-left: 3px solid #ff4d4f;
+    color: #5c0011;
+  }
+  .vs-col.sol {
+    background: #f6ffed;
+    border-left: 3px solid var(--green);
+    color: #135200;
+  }
+  .vs-col-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    opacity: 0.7;
+  }
+
+  /* ── 代码块 / Prompt 干货 ── */
+  .code-block {
+    background: var(--bg-code);
+    border-radius: 2px;
+    padding: 20px 22px;
+    margin: 20px 0;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    position: relative;
+  }
+  .code-block .code-lang {
+    position: absolute;
+    top: 10px; right: 14px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .code-block .kw { color: #cba6f7; }
+  .code-block .str { color: #a6e3a1; }
+  .code-block .cmt { color: #6c7086; font-style: italic; }
+  .code-block .key { color: #89dceb; }
+  .code-block .val { color: #f38ba8; }
+  .code-block .num { color: #fab387; }
+  .code-block .plain { color: #cdd6f4; }
+
+  /* ── 干货提示框 ── */
+  .tip-box {
+    background: var(--bg-code);
+    padding: 20px 24px;
+    margin: 20px 0;
+    border-left: 4px solid #cba6f7;
+    position: relative;
+  }
+  .tip-box .tip-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #cba6f7;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .tip-box p {
+    color: #cdd6f4;
+    font-size: 14px;
+    margin: 0;
+  }
+  .tip-box code {
+    background: rgba(203,166,247,0.15);
+    color: #a6e3a1;
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-family: monospace;
+    font-size: 12px;
+  }
+
+  /* ── 流程步骤 ── */
+  .steps {
+    counter-reset: step;
+    margin: 20px 0;
+  }
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    counter-increment: step;
+    align-items: flex-start;
+  }
+  .step::before {
+    content: counter(step);
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    background: var(--ink);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Noto Serif SC', serif;
+    margin-top: 2px;
+  }
+  .step-content {
+    flex: 1;
+    font-size: 14.5px;
+    color: var(--ink-light);
+    line-height: 1.8;
+  }
+  .step-content strong {
+    color: var(--ink);
+  }
+
+  /* ── 结果展示 ── */
+  .result-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .result-item {
+    background: #f6ffed;
+    border: 1px solid #b7eb8f;
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  .result-item .result-label {
+    font-size: 11px;
+    color: var(--green);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .result-item .result-val {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--green);
+  }
+  .result-item .result-desc {
+    font-size: 12px;
+    color: #52c41a;
+  }
+
+  /* ── 总结卡 ── */
+  .summary-card {
+    background: var(--ink);
+    padding: 36px 32px;
+    margin-top: 48px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .summary-card::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 250px; height: 250px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,56,13,0.25) 0%, transparent 70%);
+  }
+  .summary-card h3 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .summary-list {
+    list-style: none;
+    position: relative;
+  }
+  .summary-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14.5px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.7;
+  }
+  .summary-list li:last-child { border-bottom: none; }
+  .summary-list li::before {
+    content: '→';
+    color: var(--accent-warm);
+    flex-shrink: 0;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+
+  /* ── 分割线 ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 32px;
+    color: var(--ink-muted);
+    font-size: 12px;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── 引用块 ── */
+  blockquote {
+    margin: 24px 0;
+    padding: 16px 20px;
+    background: var(--highlight);
+    border-left: 4px solid var(--accent-gold);
+    font-size: 15px;
+    color: var(--ink);
+    font-style: italic;
+    line-height: 1.8;
+  }
+  blockquote .source {
+    margin-top: 8px;
+    font-size: 12px;
+    font-style: normal;
+    color: var(--ink-muted);
+  }
+
+  /* ── inline code ── */
+  code {
+    background: #f0ece3;
+    color: var(--accent);
+    padding: 1px 5px;
+    font-size: 13px;
+    font-family: monospace;
+    border-radius: 2px;
+  }
+
+  /* ── 尾部 ── */
+  .footer {
+    margin-top: 60px;
+    padding-top: 28px;
+    border-top: 2px solid var(--ink);
+    font-size: 13px;
+    color: var(--ink-muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-brand {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  @media (max-width: 500px) {
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .vs-row { grid-template-columns: 1fr; }
+    .result-row { grid-template-columns: 1fr; }
+    .cover h1 { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ 封面 ══ -->
+<div class="cover">
+  <div class="cover-tag">AI × 电商 · 2026</div>
+  <h1>OpenClaw 爆了——<br>电商人先用起来的<em>4 个姿势</em></h1>
+  <p class="cover-sub">选品 · 生图 · 客服 · 数据分析，一套 Agent 框架全打通</p>
+  <div class="cover-meta">
+    <span class="cover-meta-badge">干货向</span>
+    <span class="cover-meta-badge">附 Prompt 模板</span>
+    <span class="cover-meta-badge">跨境友好</span>
+  </div>
+</div>
+
+<!-- ══ 开篇 ══ -->
+<div class="intro-box">
+  最近 AI 圈最炸裂的事情，<strong>不是新模型发布，而是一个叫 OpenClaw 的开源框架，3 个月在 GitHub 突破 20 万 Star</strong>，把整个 Agent 生态搅了个底朝天。<br><br>
+  什么叫 Agent？简单说：它不只是「回答你的问题」，而是<strong>像真人一样，自己开浏览器、查数据、调接口、写报告</strong>——整套活儿它来干。<br><br>
+  跨境圈已经有人用它搭出「全自动客服+发货系统」，有人做了「跨时区守夜人」上线一周下载超 5 万次。今天这篇，我们把电商最核心的 4 个场景拆开讲，<strong>每个都给干货配置思路</strong>。
+</div>
+
+<!-- ══ 先搞清楚 OpenClaw 是什么 ══ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">0</div>
+    <h2>OpenClaw 到底是什么？<br>为什么电商人要关注它</h2>
+  </div>
+
+  <p>OpenClaw 是一个<strong>「本地优先」的 AI 智能体（Agent）框架</strong>，由奥地利开发者 Peter Steinberger 创建。它最核心的能力是：</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-content"><strong>工具调用（Tool Calling）</strong>：能真正去查你的 ERP、物流系统、电商后台 API，拿到真实数据再回答，不瞎编。</div>
+    </div>
+    <div class="step">
+      <div class="step-content"><strong>多 Agent 协同</strong>：可以同时跑「选品 Agent + 客服 Agent + 数据 Agent」，各司其职不打架。</div>
+    </div>
+    <div class="step">
+      <div class="step-content"><strong>会话状态管理</strong>：记得上下文，处理「先问退货政策 → 说要退 → 问退款时间」这种多轮流程，不会每次从零开始。</div>
+    </div>
+    <div class="step">
+      <div class="step-content"><strong>全平台消息集成</strong>：可接入 WhatsApp、飞书、企业微信、Slack 等，卖家在哪里工作，助手就在哪里。</div>
+    </div>
+  </div>
+
+  <blockquote>
+    传统 AI 工具只能「管中窥豹」，只看到你输入的那几行字。而 OpenClaw 的 Agent 能读你整个业务系统的上下文——这才是质的飞跃。
+    <div class="source">— AWS 官方博客对 OpenClaw 电商场景的技术解析</div>
+  </blockquote>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">20万+</div>
+      <div class="stat-label">GitHub Stars<br>3 个月内达成</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">78%</div>
+      <div class="stat-label">实测客服<br>自动解决率</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">5万+</div>
+      <div class="stat-label">跨境守夜人插件<br>上线一周下载量</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider">场景拆解</div>
+
+<!-- ══ 场景 1: 选品 ══ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <h2>🔍 AI 选品 Agent<br>让数据说话，不再靠感觉押注</h2>
+  </div>
+
+  <div class="scene-card">
+    <div class="scene-title">
+      痛点 vs 方案
+      <span class="scene-badge">选品场景</span>
+    </div>
+    <div class="vs-row">
+      <div class="vs-col pain">
+        <div class="vs-col-label">❌ 现在的苦</div>
+        每天人工扒 AliExpress 榜单、手动记录 Google Trends，靠直觉判断哪款能卖，选错了仓库积货几十万。
+      </div>
+      <div class="vs-col sol">
+        <div class="vs-col-label">✅ Agent 怎么做</div>
+        指定关键词 + 品类，Agent 自动抓多平台销量趋势、竞品评论情绪、搜索热度曲线，输出带评分的选品报告。
+      </div>
+    </div>
+
+    <div class="scene-divider"></div>
+
+    <p style="font-size:14px;color:var(--ink-light);margin-bottom:14px;">📋 <strong>选品 Agent 核心 Prompt 模板（可直接用）</strong></p>
+
+    <div class="code-block">
+      <span class="code-lang">System Prompt</span>
+<span class="plain">你是一位跨境电商选品分析师。每次用户输入品类或关键词，你需要：
+
+</span><span class="num">1.</span><span class="plain"> 调用 </span><span class="key">web_search</span><span class="plain"> 工具检索近 </span><span class="num">30</span><span class="plain"> 天该品类在 Amazon/Shopee/TikTok Shop 的销量趋势
+</span><span class="num">2.</span><span class="plain"> 调用 </span><span class="key">trends_api</span><span class="plain"> 获取 Google Trends 数据，识别上升期品类
+</span><span class="num">3.</span><span class="plain"> 爬取 Top 20 竞品的评论，用情绪分析提取用户真实痛点
+</span><span class="num">4.</span><span class="plain"> 输出结构化报告，格式如下：
+
+</span><span class="kw">## 选品评估报告</span>
+<span class="str">- 市场热度评分（1-10）</span>
+<span class="str">- 竞争激烈度（低/中/高）</span>
+<span class="str">- 用户核心痛点（TOP 3）</span>
+<span class="str">- 差异化切入建议</span>
+<span class="str">- 风险提示</span>
+
+<span class="cmt"># 注意：禁止凭空猜测，所有结论必须基于调用工具的真实数据</span>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label">💡 干货 Tip</div>
+      <p>选品 Agent 接入<code>竞品 ASIN 爬虫</code>后，可以自动分析差评中重复频率最高的词（如 "fragile", "wrong size"），这就是你的<code>产品改良方向</code>。结合 Helium10 API，效果翻倍。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 场景 2: 生图 ══ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <h2>🎨 AI 生图 Agent<br>主图批量出图，OpenClaw × 潮际好麦全自动跑通</h2>
+  </div>
+
+  <div class="scene-card green">
+    <div class="scene-title">
+      痛点 vs 方案
+      <span class="scene-badge green">生图场景</span>
+    </div>
+    <div class="vs-row">
+      <div class="vs-col pain">
+        <div class="vs-col-label">❌ 现在的苦</div>
+        换季上新几十款 SKU，每张主图都要上传、选平台、调参数、点生成……重复操作把美工搞崩，手速跟不上备货节奏。
+      </div>
+      <div class="vs-col sol">
+        <div class="vs-col-label">✅ Agent 怎么做</div>
+        OpenClaw 本地部署后直接接管浏览器，自动完成上传产品图、选平台风格、调清晰度、点击生成的全套操作，人只需最后审图。
+      </div>
+    </div>
+
+    <div class="scene-divider"></div>
+
+    <!-- 真实案例标签 -->
+    <p style="font-size:14px;color:var(--ink-light);margin-bottom:14px;">🎬 <strong>真实案例：OpenClaw 本地部署 × 潮际好麦，一句话跑出 4 张 2K 淘宝主图</strong></p>
+
+    <!-- 案例描述框 -->
+    <div style="background:#f0faf4;border:1px solid #b7eb8f;border-left:4px solid #52c41a;padding:18px 20px;margin-bottom:20px;font-size:14.5px;line-height:1.85;color:#1a1a1a;">
+      <strong style="color:#389e0d;">📍 场景还原</strong><br><br>
+      将一件碎花衬衫的产品图上传后，用户只发了一条指令给 OpenClaw：<br>
+      <span style="display:block;margin:10px 0;padding:10px 14px;background:#1e1e2e;color:#a6e3a1;font-family:monospace;font-size:13px;border-radius:2px;">「去潮际好麦的商品套图那里帮我做一组淘宝风格的主图出来，高级模式，2K，4张，然后下载到桌面」</span>
+      OpenClaw 随即自动接管浏览器，完成了原本需要人工点击十几步的操作。
+    </div>
+
+    <!-- Agent 执行步骤 -->
+    <p style="font-size:14px;color:var(--ink-light);margin-bottom:14px;">📋 <strong>OpenClaw 实际执行全过程（截图还原）</strong></p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-content">
+          <strong>解析指令</strong>：识别目标平台「淘宝」、生图类型「主图辅图」、模式「高级(e6)」、清晰度「2K(e8)」、张数「4张」，自动拆解为操作序列
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <strong>导航 + 上传</strong>：打开潮际好麦商品套图页面，定位上传区域，将产品图上传至「多视角商品图」输入框
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <strong>参数配置</strong>：依次勾选目标平台（淘宝 ✅）、开启高级模式(e6) ✅、设置 2K 高清(e8) ✅、设置生成数量 4 张 ✅ ——全部自动点击，无需人工介入
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <strong>确认 + 执行</strong>：自动核验所有设置无误后，点击「立即生成 120」按钮，触发出图任务（新用户赠送 200 米豆，首次使用成本为零）
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <strong>下载交付</strong>：生成完成后，自动将 4 张 2K 主图批量下载到桌面，全程无需用户盯屏
+        </div>
+      </div>
+    </div>
+
+    <div class="scene-divider"></div>
+
+    <!-- 参数对照表 -->
+    <p style="font-size:14px;color:var(--ink-light);margin-bottom:12px;">⚙️ <strong>潮际好麦关键参数说明（OpenClaw 自动识别映射）</strong></p>
+
+    <div style="overflow-x:auto;margin-bottom:20px;">
+      <table style="width:100%;border-collapse:collapse;font-size:13.5px;">
+        <thead>
+          <tr style="background:var(--ink);color:#fff;">
+            <th style="padding:10px 14px;text-align:left;font-weight:600;">用户说的话</th>
+            <th style="padding:10px 14px;text-align:left;font-weight:600;">平台参数</th>
+            <th style="padding:10px 14px;text-align:left;font-weight:600;">实际效果</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#fff;border-bottom:1px solid var(--border);">
+            <td style="padding:10px 14px;color:var(--ink-light);">淘宝风格</td>
+            <td style="padding:10px 14px;"><code>目标平台：淘宝</code></td>
+            <td style="padding:10px 14px;color:var(--green);">符合淘宝主图审美与尺寸规范</td>
+          </tr>
+          <tr style="background:#faf8f3;border-bottom:1px solid var(--border);">
+            <td style="padding:10px 14px;color:var(--ink-light);">高级模式</td>
+            <td style="padding:10px 14px;"><code>e6 高级模式</code></td>
+            <td style="padding:10px 14px;color:var(--green);">更精细的商品细节还原</td>
+          </tr>
+          <tr style="background:#fff;border-bottom:1px solid var(--border);">
+            <td style="padding:10px 14px;color:var(--ink-light);">2K</td>
+            <td style="padding:10px 14px;"><code>e8 清晰度 2K</code></td>
+            <td style="padding:10px 14px;color:var(--green);">输出分辨率满足高清主图要求</td>
+          </tr>
+          <tr style="background:#faf8f3;">
+            <td style="padding:10px 14px;color:var(--ink-light);">4张</td>
+            <td style="padding:10px 14px;"><code>生成数量：4</code></td>
+            <td style="padding:10px 14px;color:var(--green);">一次出 4 个版本可供选择</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 效率对比 -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+      <div style="background:var(--highlight-red);border:1px solid #ffa39e;padding:14px 16px;">
+        <div style="font-size:11px;font-weight:700;color:#a8071a;margin-bottom:6px;">⏱ 人工操作耗时</div>
+        <div style="font-family:'Noto Serif SC',serif;font-size:22px;font-weight:900;color:#cf1322;">~15 分钟</div>
+        <div style="font-size:12px;color:#a8071a;">上传→选参数→点生成→等待→下载</div>
+      </div>
+      <div style="background:#f6ffed;border:1px solid #b7eb8f;padding:14px 16px;">
+        <div style="font-size:11px;font-weight:700;color:#135200;margin-bottom:6px;">🤖 OpenClaw 自动耗时</div>
+        <div style="font-family:'Noto Serif SC',serif;font-size:22px;font-weight:900;color:var(--green);">全自动</div>
+        <div style="font-size:12px;color:#52c41a;">发完指令就去做别的，图好了自动到桌面</div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label">💡 批量跑图干货 · 进阶用法</div>
+      <p>
+        有了 OpenClaw 的 Agent 能力，可以把上面的流程做成<code>批量任务</code>：准备一个包含所有 SKU 图片路径的列表，让 Agent 循环执行，<strong>50 款 SKU 的主图可以在你睡觉时全部跑完</strong>。<br><br>
+        核心指令结构：<code>遍历 [SKU列表]，对每个产品执行：上传图片 → 选择[平台] → 高级模式 → 2K → 生成4张 → 保存到 [对应文件夹]</code>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 场景 3: 客服 ══ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <h2>🤖 AI 客服 Agent<br>7×24 不下班，78% 自动解决</h2>
+  </div>
+
+  <div class="scene-card blue">
+    <div class="scene-title">
+      真实案例
+      <span class="scene-badge blue">客服场景</span>
+    </div>
+
+    <blockquote style="margin-top:0;margin-bottom:16px;">
+      某跨境团队 5 人客服，每天 300+ 咨询，80% 是重复问题，月人力成本 4 万，满意度 72%。用 OpenClaw 搭建 AI 客服 Agent 后，<strong>自动解决率 78%，满意度提升至 89%</strong>，月省人力成本 2.6 万。
+      <div class="source">— 来源：熊猫出海实操案例</div>
+    </blockquote>
+
+    <p style="font-size:14px;color:var(--ink-light);margin-bottom:14px;">📋 <strong>电商客服 Agent 四层架构</strong></p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-content">
+          <strong>意图识别 Agent</strong>：判断是「物流查询 / 退换货 / 优惠咨询 / 投诉」，路由到对应的专项 Agent
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <strong>物流查询 Agent</strong>：接入 ERP/物流 API，实时返回真实快递状态，不编造
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <strong>售后处理 Agent</strong>：按退换货政策自动判断资格，符合条件直接走流程，超权限转人工
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-content">
+          <strong>升级 Agent</strong>：检测到负面情绪（愤怒、威胁差评）时，立即转真人 + 打优先标签
+        </div>
+      </div>
+    </div>
+
+    <div class="scene-divider"></div>
+
+    <div class="code-block">
+      <span class="code-lang">核心配置思路</span>
+<span class="cmt"># 关键：给客服 Agent 设置「安全边界」</span>
+<span class="plain">
+</span><span class="key">退款权限控制</span><span class="plain">：AI 只能发起申请，实际退款由业务系统二次确认
+</span><span class="key">敏感操作</span><span class="plain">：修改收货地址、大额退款需短信验证码
+</span><span class="key">数据隔离</span><span class="plain">：每个店铺 Agent 只能访问本店 token，不交叉
+</span><span class="key">审计日志</span><span class="plain">：所有操作留痕，支持事后追溯
+
+</span><span class="cmt"># 多语言配置（跨境必备）</span>
+<span class="str">languages</span><span class="plain">: [</span><span class="str">"zh-CN"</span><span class="plain">, </span><span class="str">"en-US"</span><span class="plain">, </span><span class="str">"ja-JP"</span><span class="plain">, </span><span class="str">"id-ID"</span><span class="plain">, </span><span class="str">"th-TH"</span><span class="plain">]
+</span><span class="str">auto_detect</span><span class="plain">: </span><span class="num">true</span>
+<span class="str">fallback</span><span class="plain">: </span><span class="str">"en-US"</span>
+    </div>
+
+    <div class="result-row">
+      <div class="result-item">
+        <div class="result-label">自动解决率</div>
+        <div class="result-val">78%</div>
+        <div class="result-desc">300条/天 234条免人工</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">满意度提升</div>
+        <div class="result-val">+17%</div>
+        <div class="result-desc">72% → 89%</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">月节省成本</div>
+        <div class="result-val">2.6万</div>
+        <div class="result-desc">减少3名客服人力</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">响应时效</div>
+        <div class="result-val">&lt;3s</div>
+        <div class="result-desc">7×24 全天候在线</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 场景 4: 数据分析 ══ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <h2>📊 AI 数据分析 Agent<br>让 BI 报表「会说话、会预警」</h2>
+  </div>
+
+  <div class="scene-card gold">
+    <div class="scene-title">
+      从「被动看报表」到「主动来提醒」
+      <span class="scene-badge gold">数据场景</span>
+    </div>
+
+    <div class="vs-row">
+      <div class="vs-col pain">
+        <div class="vs-col-label">❌ 现在的苦</div>
+        每天早上下载 N 张 Excel，手动对比昨日/上周/上月数据，退货率飙升了等到月底才发现。
+      </div>
+      <div class="vs-col sol">
+        <div class="vs-col-label">✅ Agent 怎么做</div>
+        Agent 每小时自动巡检核心指标，退货率异常、库存告急、广告 ROI 下跌时<strong>主动推送预警</strong>到飞书/企微。
+      </div>
+    </div>
+
+    <div class="scene-divider"></div>
+
+    <p style="font-size:14px;color:var(--ink-light);margin-bottom:14px;">📋 <strong>数据 Agent 核心监控指标配置</strong></p>
+
+    <div class="code-block">
+      <span class="code-lang">监控配置示例</span>
+<span class="cmt"># 电商数据 Agent 巡检规则</span>
+<span class="plain">
+</span><span class="key">alerts</span><span class="plain">:
+  - </span><span class="str">name</span><span class="plain">: </span><span class="val">"退货率异常"</span>
+    <span class="str">condition</span><span class="plain">: </span><span class="val">return_rate > 8%</span><span class="plain"> </span><span class="cmt"># 超过行业均值</span>
+    <span class="str">action</span><span class="plain">: push_feishu + </span><span class="val">生成差评归因报告</span>
+
+  - <span class="str">name</span><span class="plain">: </span><span class="val">"库存预警"</span>
+    <span class="str">condition</span><span class="plain">: </span><span class="val">stock_days < 14</span>
+    <span class="str">action</span><span class="plain">: push_wechat_work + </span><span class="val">触发补货建议工作流</span>
+
+  - <span class="str">name</span><span class="plain">: </span><span class="val">"广告 ROI 下跌"</span>
+    <span class="str">condition</span><span class="plain">: </span><span class="val">acos_7d > acos_30d * 1.2</span>
+    <span class="str">action</span><span class="plain">: </span><span class="val">暂停低效广告组 + 推送优化建议</span>
+
+  - <span class="str">name</span><span class="plain">: </span><span class="val">"爆款信号"</span>
+    <span class="str">condition</span><span class="plain">: </span><span class="val">sales_3d_growth > 40%</span>
+    <span class="str">action</span><span class="plain">: </span><span class="val">触发快速补货 + 广告加价流程</span>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label">💡 运营黄金法则</div>
+      <p>
+        现有 AI 助手几乎都是「你问我答」模式——<strong>库存告急？你不问就不知道。</strong><br><br>
+        OpenClaw 的 Agent 可以配置成「主动巡检 + 主动预警」，这才是真正的<code>数字运营助手</code>，而不是一个等着被问的聊天机器人。<br><br>
+        建议优先配置：<code>退货率</code>、<code>库存天数</code>、<code>ACOS</code> 三个核心指标的自动预警。
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="divider">写在最后</div>
+
+<!-- ══ 总结 ══ -->
+<div class="summary-card">
+  <h3>电商人用 OpenClaw 的正确姿势</h3>
+  <ul class="summary-list">
+    <li>先从<strong>客服场景</strong>入手，投入低、效果可量化，1 周内见收益</li>
+    <li>选品和数据分析需要对接平台 API，<strong>从「只读查询」开始</strong>，验证准确性后再扩展</li>
+    <li>生图工作流建议先<strong>定好品牌风格 Prompt 模板库</strong>，再批量复用</li>
+    <li>跨境卖家重点关注<strong>多语言配置</strong>和<strong>时区覆盖</strong>，这是最大差异化优势</li>
+    <li>所有 Agent 必须设置<strong>权限边界和审计日志</strong>，AI 决策 + 人工审批 = 安全落地</li>
+  </ul>
+</div>
+
+<!-- ══ 尾部 ══ -->
+<div class="footer">
+  <div class="footer-brand">AI 电商工具研究所</div>
+  <div>关注我们，每周更新 AI × 电商干货</div>
+</div>
+
+</body>
+</html>
